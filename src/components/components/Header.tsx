@@ -18,8 +18,10 @@ import {
 } from "../ui/dropdown-menu";
 
 import React from "react";
+import { checkUser } from "@/lib/checkUser";
 
-function Header() {
+async function Header() {
+    await checkUser();
 	return (
 		<header className="fixed top-0 py-2 px-3 border-b shadow-xl w-full text-white bg-[#0f0f0f60] backdrop-blur-md z-10">
 			<div className=" flex justify-between items-center">
