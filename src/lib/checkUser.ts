@@ -24,7 +24,7 @@ export const checkUser = async () => {
 			},
 		});
         return createUser;
-    } catch (error) {
-        console.error("Error occured - ", ((error as Error)?.message || error))
+    } catch (error: any) {
+        console.error("Error occured - ", (error?.message || error))
     }
 }

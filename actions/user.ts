@@ -52,10 +52,12 @@ export async function updateUser(data: any) {
                 }
             })
 
-            return {updateUser, industryInsight}
+            return {updatedUser, industryInsight}
         }, {
             timeout: 10000
         })
+        console.log("Result in user.ts file - ", result)
+        return {success: true, ...result}
     } catch (error) {
         console.error("Error updating user and industry: ", (error as Error).message)
         throw new Error("Failed updating user profile")
@@ -74,16 +76,18 @@ export async function getUserOnboardingStatus() {
     })
 
     if (!user) throw new Error("User not found")
+        console.log("Printing user in user.ts actions file - ", user)
     
-    try {
-        const user = await db.user.findUnique({
-            where: {
-                clerkUserId: userId
+        try {
+            const user = await db.user.findUnique({
+                where: {
+                    clerkUserId: userId
             },
             select: {
                 industry: true
             }
         })
+        console.log("Printing user with industry in user.ts actions file - ", user)
 
         return {
             isOnboarded: !!user?.industry

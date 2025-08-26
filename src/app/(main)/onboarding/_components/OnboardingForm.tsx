@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from 'react'
-import {useForm} from "react-hook-form";
+import React, { useEffect, useState } from 'react'
+import {SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {onBoardingSchema} from '@/app/lib/onBoardingSchema'
 import { useRouter } from 'next/navigation';
@@ -10,12 +10,23 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import useFetch from '@/../hooks/useFetch';
+import { updateUser } from '@/../actions/user';
+import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 interface industriesType {
     id: string;
     name: string;
     subIndustries: string[]
 }
 
+interface onBoardingType {
+    industry: string;
+    subindustry: string;
+    bio?: string;
+    experience: number;
+    skills?: string[];
+}
 
 const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
     const [selectedIndustry, setSelectedIndustry] = useState<industriesType | null>(null);
@@ -23,9 +34,28 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
     const {register, handleSubmit, setValue, watch, formState: {errors}} = useForm({
         resolver: zodResolver(onBoardingSchema)
     })
-    const onSubmitHandler = (values: any) => {
-		console.log(values);
+    const { data: updateResult, loading: updateLoading, fn: updateUserFn }: any = useFetch(updateUser)
+    const onSubmitHandler = async (values: onBoardingType) => {
+		try {
+			console.log(values);
+			const formattedIndustry = `${values.industry}-${values.subindustry.toLowerCase().replace(/ /g, '-')}`;
+            await updateUserFn({
+                ...values,
+                industry: formattedIndustry
+            })
+            console.log("UpdateUserFn")
+		} catch (error) {
+            console.error("Onboarding Error: ", error)
+        }
 	};
+
+    useEffect(() => {
+        if ((updateResult?.success) && !updateLoading) {
+            toast.success("Profile updated Successfully!")
+            router.push("/dashboard");
+            router.refresh()
+        }
+    }, [updateResult, updateLoading])
     const watchIndustry = watch("industry")
   return (
 		<div className="flex justify-center items-center bg-background">
@@ -50,6 +80,10 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 							</Label>
 							<Select
 								onValueChange={(val) => {
+									console.log(
+										"Industry on  value change",
+										val
+									);
 									setValue("industry", val);
 									setSelectedIndustry(
 										industries.find(
@@ -63,7 +97,7 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 									<SelectValue placeholder="Select an Industry" />
 								</SelectTrigger>
 								<SelectContent>
-									{industries.map((each, index) => {
+									{industries.map((each) => {
 										return (
 											<SelectItem
 												key={each.id}
@@ -130,7 +164,14 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 							>
 								Years of Experience
 							</Label>
-							<Input id='experience' placeholder='Enter Years of Experience' type='number' min={0} max={50} {...register("experience")}/>
+							<Input
+								id="experience"
+								placeholder="Enter Years of Experience"
+								type="number"
+								min={0}
+								max={50}
+								{...register("experience")}
+							/>
 							{errors.experience && (
 								<p className="text-red-500 text-sm">
 									{errors.experience.message}
@@ -138,16 +179,17 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 							)}
 						</div>
 						<div>
-							<Label
-								htmlFor="skills"
-								className="text-lg mb-2"
-							>
+							<Label htmlFor="skills" className="text-lg mb-2">
 								Skills
 							</Label>
-							<Input id='skills' placeholder='e.g., Python, C, C++, Java' {...register("skills")}/>
-                            <p className='text-sm text-muted-foreground'>
-                                Seperate multiple skills with commas
-                            </p>
+							<Input
+								id="skills"
+								placeholder="e.g., Python, C, C++, Java"
+								{...register("skills")}
+							/>
+							<p className="text-sm text-muted-foreground">
+								Seperate multiple skills with commas
+							</p>
 							{errors.skills && (
 								<p className="text-red-500 text-sm">
 									{errors.skills.message}
@@ -155,13 +197,14 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 							)}
 						</div>
 						<div>
-							<Label
-								htmlFor="bio"
-								className="text-lg mb-2"
-							>
+							<Label htmlFor="bio" className="text-lg mb-2">
 								Professional Bio
 							</Label>
-							<Textarea id='bio' placeholder='Enter your Professional Bio' {...register("bio")}/>
+							<Textarea
+								id="bio"
+								placeholder="Enter your Professional Bio"
+								{...register("bio")}
+							/>
 							{errors.bio && (
 								<p className="text-red-500 text-sm">
 									{errors.bio.message}
@@ -169,9 +212,20 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 							)}
 						</div>
 
-                        <Button className='w-full mt-4' type='submit'>
-                            Complete your Profile
-                        </Button>
+						<Button
+							className="w-full mt-4"
+							type="submit"
+							disabled={updateLoading}
+						>
+							{updateLoading ? (
+								<>
+									<Loader2 className="w-4 h-4 mr-2 animate-spin" />{" "}
+									Saving...
+								</>
+							) : (
+								"Complete Profile"
+							)}
+						</Button>
 					</form>
 				</CardContent>
 			</Card>
