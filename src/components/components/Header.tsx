@@ -26,7 +26,7 @@ async function Header() {
 		<header className="fixed top-0 py-2 px-3 border-b shadow-xl w-full text-white bg-[#0f0f0f60] backdrop-blur-md z-10">
 			<div className=" flex justify-between items-center">
 				<Logo />
-				<div id="right" className="flex items-center gap-x-2">
+				<div className="flex items-center gap-x-2">
 					<SignedIn>
 						<Link href="/dashboard">
 							<Button
