@@ -1,11 +1,13 @@
 "use client"
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import Image from 'next/image';
+import { Loader2 } from 'lucide-react';
 
 function HeroSection() {
 	const imageRef = useRef<HTMLDivElement>(null);
+	const [showIcon, setShowIcon] = useState<"started" | "demo" | null>(null)
 
     useEffect(() => {
         const imageEle = imageRef.current;
@@ -42,23 +44,32 @@ function HeroSection() {
 					</h1>
 				</div>
 				<div className="space-x-2 mt-2">
-					<Link href="/get-started">
-						<Button size="lg" className="px-8">
+					<Link href="/dashboard">
+						<Button size="lg" className="px-8"
+                            onClick={() => setShowIcon("started")}
+                        >
+							{showIcon === "started" && (
+								<Loader2 className="w-4 h-4 animate-spin"></Loader2>
+							)}
 							Get Started
 						</Button>
 					</Link>
 					<Link href="/watch-demo">
 						<Button
 							size="lg"
-							className="px-8 bg-black"
+							className="px-8"
 							variant="outline"
+							onClick={() => setShowIcon("demo")}
 						>
+							{showIcon === "demo" && (
+								<Loader2 className="w-4 h-4 animate-spin"></Loader2>
+							)}
 							Watch Demo
 						</Button>
 					</Link>
 				</div>
 				<div className="hero-image-wrapper m-4">
-					<div ref={imageRef} className='hero-image'>
+					<div ref={imageRef} className="hero-image">
 						<Image
 							src={"/banner.jpg"}
 							height={720}

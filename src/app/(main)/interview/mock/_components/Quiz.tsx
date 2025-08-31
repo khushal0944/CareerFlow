@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import QuizResult from './QuizResult';
 
 interface eachQuizType {
           question: string;
@@ -33,7 +34,7 @@ const Quiz = () => {
 		data: scoreData,
 		fn: saveScoreFn,
 		loading: savingScore,
-        setData: saveQuizData
+        setData: setScoreData
 	}: {
 		data: eachQuizType[] | null;
 		fn: (...args: any[]) => Promise<any>;
@@ -77,8 +78,8 @@ const Quiz = () => {
 
     const finishQuiz = async () => {
         const score = calculateScore();
-
         try {
+            console.log("Score Data - ", scoreData)
             await saveScoreFn(quizData, answers, score);
             toast.success("Quiz completed!")
         } catch (error) {
@@ -89,6 +90,20 @@ const Quiz = () => {
 
     if (generatingQuiz) {
         return <BarLoader className='w-full mx-auto ' width={'80%'} color='gray'/>
+    }
+    
+    const startNewQuiz = () => {
+        setCurrentQuestion(0)
+        setAnswers([])
+        setShowExplaination(false)
+        generateQuizFn()
+        setScoreData(null);
+    }
+
+    if (scoreData) {
+        return <div className='m-2'>
+            <QuizResult result={scoreData} onStartNew={startNewQuiz}/>
+        </div>
     }
 
     if (!quizData) {
@@ -110,7 +125,6 @@ const Quiz = () => {
             </Card>
         )
     }
-
     const question: eachQuizType = quizData[currentQuestion];
   return (
 		<div>

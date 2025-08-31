@@ -218,7 +218,7 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 						<Button
 							className="w-full mt-4"
 							type="submit"
-							disabled={updateLoading}
+							disabled={updateLoading || updateResult}
 						>
 							{updateLoading ? (
 								<>

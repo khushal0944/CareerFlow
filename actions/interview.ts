@@ -20,9 +20,11 @@ export async function generateQuiz() {
 	});
 	if (!user) throw new Error("User not found");
 
-	const prompt = `Generate 10 technical interview questions for a ${
+    console.log(user.industry)
+
+	const prompt = `Generate 3 technical interview questions for a ${
 		user.industry
-	} professional${
+	} professional having experience of ${user?.experience} ${
 		user.skills?.length
 			? ` with expertise in ${user.skills.join(", ")}`
 			: ""
@@ -120,4 +122,31 @@ export const saveQuizResult = async (questions: any[], answers: any[], score: an
     console.log("Error saving quiz result: ", error)
     throw new Error("Failed to save quiz result")
   }
+}
+
+export const getAssessments = async () => {
+    const { userId } = await auth();
+	if (!userId) throw new Error("Unauthorized");
+
+	const user = await db.user.findUnique({
+		where: {
+			clerkUserId: userId,
+		},
+	});
+	if (!user) throw new Error("User not found");
+
+    try {
+        const assessments = await db.assessment.findMany({
+            where: {
+                userId: user.id
+            }, orderBy: {
+                createdAt: "asc"
+            }
+        })
+        console.log(assessments)
+        return assessments;
+    } catch (error: any) {
+        console.log("Error fetching assessments", error)
+        throw new Error("error fetching assessments", error.message)
+    }
 }

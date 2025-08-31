@@ -5,7 +5,10 @@ export const checkUser = async () => {
 	try {
 		const user = await currentUser();
 		if (!user) return null;
-
+        
+        if (!db) {
+            throw new Error("Database connection error")
+        }
 		const loggedInUser = await db.user.findUnique({
 			where: { clerkUserId: user.id },
 		});

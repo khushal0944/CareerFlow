@@ -46,7 +46,7 @@ export async function getIndustryInsights() {
         }
 	});
 	if (!user) throw new Error("user not found");
-
+    if (!user.industry) throw new Error("User not onboarded")
 	if (!user?.industryInsight) {
 		const insights: any = await generateAiInsights(user.industry);
 
