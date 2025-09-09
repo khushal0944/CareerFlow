@@ -24,7 +24,7 @@ const QuizList = ({ assessments }: {assessments: AssessmentType[]}) => {
 						</CardDescription>
 					</div>
 					<div>
-						<Button onClick={() => router.push("/mock")}>
+						<Button onClick={() => router.push("/interview/mock")}>
 							Start new quiz
 						</Button>
 					</div>

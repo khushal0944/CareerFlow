@@ -77,7 +77,7 @@ model Assessment {
 
 model CoverLetter {
     id String @id @default(uuid())
-    userId String @unique
+    userId String 
     user User @relation(fields: [userId], references: [id])
     content String
     jobDescription String?

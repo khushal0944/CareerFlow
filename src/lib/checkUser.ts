@@ -2,12 +2,12 @@ import { currentUser } from "@clerk/nextjs/server";
 import { db } from "./prisma";
 
 export const checkUser = async () => {
+    const user = await currentUser();
+    if (!user) return null;
 	try {
-		const user = await currentUser();
-		if (!user) return null;
         
         if (!db) {
-            throw new Error("Database connection error")
+            return null;
         }
 		const loggedInUser = await db.user.findUnique({
 			where: { clerkUserId: user.id },
@@ -29,6 +29,6 @@ export const checkUser = async () => {
 		return createUser;
 	} catch (error: any) {
 		console.error("checkUser error:", error);
-		throw error; // Let it bubble up to see the actual error in Next.js
+		throw error;
 	}
 };
