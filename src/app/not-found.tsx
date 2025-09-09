@@ -13,6 +13,7 @@ const page = () => {
             </p>
             <p className='text-muted-foreground'>
                 Oops! The page you're looking for does not exist or been moved.
+                You Can click down button to go Home.
             </p>
             <Link href={'/'}>
                 <Button>
