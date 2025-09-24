@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React from 'react'
 import MDEditor from '@uiw/react-md-editor'
 
 const CoverLetterPreview = ({content}: {content: string}) => {

@@ -1,17 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { entrySchema } from "@/app/lib/resumeSchema";
 import { Button } from "@/components/ui/button";
 import {
 	Loader2,
 	PlusCircle,
 	PlusIcon,
-	Sparkle,
-	Sparkles,
 	SparklesIcon,
-	XCircle,
 	XIcon,
 } from "lucide-react";
 import {
@@ -110,7 +107,7 @@ const EntryForm = ({
 		if (improveWithAiError) {
 			toast.error(improveWithAiError || "Failed to improve description");
 		}
-	}, [improveWithAiData, improveWithAiError, improveWithAiLoading]);
+	}, [improveWithAiData, improveWithAiError, improveWithAiLoading, setValue]);
 
 	const handleImproveWithAI = async () => {
 		const description = watch("description");

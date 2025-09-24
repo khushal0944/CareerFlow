@@ -47,8 +47,8 @@ export async function getAllCoverLetters() {
                 createdAt: "desc",
             }
 		});
-	} catch (error: any) {
-		console.error("Error fetching cover letters", error.message);
+	} catch (error) {
+		console.error("Error fetching cover letters", (error as Error).message);
 		throw new Error("Error fetching cover letters");
 	}
 }
@@ -108,8 +108,8 @@ export async function generateAICoverLetter(data: CoverLetterType) {
         console.log(res)
 
         return res;
-	} catch (error: any) {
-        console.error("Error generating cover letter" ,error.message)
+	} catch (error) {
+        console.error("Error generating cover letter" ,(error as Error).message)
         throw new Error("Error generating cover letter")
     }
 }

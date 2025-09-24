@@ -11,10 +11,8 @@ const inter = Inter({subsets: ['latin']})
 
 export const metadata: Metadata = {
 	title: "CareerFlow - Ai Career Coach",
-	description: "this website is to guide you in your career",
+	description: "This website is to guide you in your career",
 };
-
-
 
 export default function RootLayout({
 	children,

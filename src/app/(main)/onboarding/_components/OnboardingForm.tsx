@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react'
-import {SubmitHandler, useForm} from "react-hook-form";
+import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod"
 import {onBoardingSchema} from '@/app/lib/onBoardingSchema'
 import { useRouter } from 'next/navigation';
@@ -37,22 +37,17 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
     const { data: updateResult, loading: updateLoading, fn: updateUserFn }: any = useFetch(updateUser)
     const onSubmitHandler = async (values: onBoardingType) => {
 		try {
-			console.log(values);
 			const formattedIndustry = `${values.industry}-${values.subindustry.toLowerCase().replace(/ /g, '-')}`;
-            console.log("Update Loading: ", updateLoading)
             await updateUserFn({
                 ...values,
                 industry: formattedIndustry
             })
-            console.log("UpdateUserFn")
-            console.log("Update Loading: ", updateLoading)
 		} catch (error) {
             console.error("Onboarding Error: ", error)
         }
 	};
 
     useEffect(() => {
-        console.log("updateLoading: ", updateLoading)
         if ((updateResult?.success) && !updateLoading) {
             toast.success("Profile updated Successfully!")
             router.push("/dashboard");
@@ -83,10 +78,6 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 							</Label>
 							<Select
 								onValueChange={(val) => {
-									console.log(
-										"Industry on  value change",
-										val
-									);
 									setValue("industry", val);
 									setSelectedIndustry(
 										industries.find(
@@ -152,11 +143,11 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 										)}
 									</SelectContent>
 								</Select>
-								{/* {errors.subindustry && (
+								{errors.subindustry && (
 									<p className="text-red-500 text-sm">
 										{errors.subindustry.message}
 									</p>
-								)} */}
+								)}
 							</div>
 						)}
 
@@ -175,11 +166,11 @@ const OnboardingForm = ({industries}: {industries: industriesType[]}) => {
 								max={50}
 								{...register("experience")}
 							/>
-							{/* {errors.experience && (
+							{errors.experience && (
 								<p className="text-red-500 text-sm">
 									{errors.experience.message}
 								</p>
-							)} */}
+							)}
 						</div>
 						<div>
 							<Label htmlFor="skills" className="text-lg mb-2">

@@ -27,8 +27,8 @@ export const checkUser = async () => {
 		});
 
 		return createUser;
-	} catch (error: any) {
-		console.error("checkUser error:", error);
+	} catch (error) {
+		console.error("checkUser error:", (error as Error).message);
 		throw error;
 	}
 };

@@ -42,11 +42,11 @@ const Quiz = () => {
         setData: (...args: any) => any
 	} = useFetch(saveQuizResult);
 
-    console.log(scoreData)
-
     useEffect(() => {
         if (quizData) {
-            setAnswers(new Array((quizData as []).length).fill(null))
+            setAnswers(
+				new Array((quizData as eachQuizType[]).length).fill(null)
+			);
         }
     }, [quizData])
 
@@ -57,29 +57,31 @@ const Quiz = () => {
     }
 
     const handleNext = () => {
-        if (quizData && currentQuestion < (quizData as []).length - 1) {
-            setCurrentQuestion(currentQuestion + 1);
-            setShowExplaination(false)
-        } else {
-            finishQuiz()
-        }
+        if (
+			quizData &&
+			currentQuestion < (quizData as eachQuizType[]).length - 1
+		) {
+			setCurrentQuestion(currentQuestion + 1);
+			setShowExplaination(false);
+		} else {
+			finishQuiz();
+		}
     }
 
     const calculateScore = () => {
         if (!quizData) return;
         let correct = 0;
         answers.forEach((answer, index) => {
-			if (answer === (quizData as any)[index].correctAnswer) {
-                correct++;
-            }
+			if (answer === (quizData as eachQuizType[])[index].correctAnswer) {
+				correct++;
+			}
 		});
-        return (correct / (quizData as []).length) * 100;
+        return (correct / (quizData as eachQuizType[]).length) * 100;
     }
 
     const finishQuiz = async () => {
         const score = calculateScore();
         try {
-            console.log("Score Data - ", scoreData)
             await saveScoreFn(quizData, answers, score);
             toast.success("Quiz completed!")
         } catch (error) {
@@ -132,7 +134,7 @@ const Quiz = () => {
 				<CardHeader>
 					<CardTitle>
 						Question {currentQuestion + 1} of{" "}
-						{(quizData as []).length}
+						{(quizData as eachQuizType[]).length}
 					</CardTitle>
 				</CardHeader>
 				<CardContent className="space-y-4">
@@ -187,7 +189,7 @@ const Quiz = () => {
                             savingScore && <Loader2 className='h-4 w-4 animate-spin'/>
                         }
                         {
-                            currentQuestion < (quizData as []).length - 1 ? "Next Question": "Finish Quiz"
+                            currentQuestion < (quizData as eachQuizType[]).length - 1 ? "Next Question": "Finish Quiz"
                         }
                     </Button>
 				</CardFooter>

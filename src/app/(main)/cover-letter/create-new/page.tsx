@@ -16,8 +16,8 @@ import { Loader2, XIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CoverLetterType } from "../page";
-import { generateAICoverLetter } from "../../../../../actions/coverLetter";
-import useFetch from "../../../../../hooks/useFetch";
+import { generateAICoverLetter } from "@/../actions/coverLetter";
+import useFetch from "@/../hooks/useFetch";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -51,8 +51,8 @@ const CreateNew = () => {
 	const generateCoverLetter = async (data: CoverLetterType) => {
 		try {
 			generatingletterFn(data);
-		} catch (error: any) {
-			console.error("Generating cover letter error", error.message);
+		} catch (error) {
+			console.error("Generating cover letter error", (error as Error).message);
 		}
 	};
 

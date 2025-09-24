@@ -19,7 +19,6 @@ import {
 	XAxis,
 	YAxis,
 	Tooltip,
-	Legend,
 	Bar,
 	Rectangle,
 } from "recharts";
@@ -172,7 +171,7 @@ const DashboardView = ({ insights }: { insights: insightsType }) => {
 										tick={{ fontSize: 12 }}
 										angle={-30}
 										textAnchor="end"
-										dy={10} // push label a little down
+										dy={10}
 									/>
 									<YAxis />
 									<Tooltip

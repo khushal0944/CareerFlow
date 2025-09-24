@@ -4,7 +4,7 @@ import { Eye, Loader2, PlusIcon, Trash2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import useFetch from '../../../../hooks/useFetch'
 import { deleteCoverLetterWithId, getAllCoverLetters } from '@/../actions/coverLetter'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { BarLoader } from 'react-spinners'
 import { format } from 'date-fns'
 import Link from 'next/link'
@@ -24,7 +24,7 @@ export interface CoverLetterResponseType extends CoverLetterType{
     id: string;
 }
 
-const page = () => {
+const CoverPage = () => {
     const [coverLetters, setCoverLetters] = useState<CoverLetterResponseType[]>([])
     const {
         data: lettersData,
@@ -35,7 +35,7 @@ const page = () => {
 
     useEffect(() => {
         fetchCoverLetters()
-    }, [])
+    }, [fetchCoverLetters])
 
     const router = useRouter()
 
@@ -63,13 +63,13 @@ const page = () => {
         if (isDeletedError) {
             toast.error("Error deleting Cover letter");
         }
-    }, [isDeletedData, isDeletedError, isDeleted,]);
+    }, [isDeletedData, isDeletedError, isDeleted, fetchCoverLetters]);
 
     const deleteCoverLetter = async (id: string) => {
         try {
-            deleteCoverLetterFn(id)
-        } catch (error: any) {
-            console.error("Error deleting cover letter with id", id, "With error is ", error?.message)
+            await deleteCoverLetterFn(id)
+        } catch (error) {
+            console.error("Error deleting cover letter with id", id, "With error is ", (error as Error)?.message)
             toast.error("Error deleting Cover letter with id" + id)
         }
     }
@@ -106,7 +106,7 @@ const page = () => {
 									<p className="mt-2 text-sm text-muted-foreground font-normal italic">
 										Created{" "}
 										{format(
-											eachLetter.createdAt,
+											new Date(eachLetter.createdAt),
 											"dd MMMM yyyy"
 										)}
 									</p>
@@ -154,4 +154,4 @@ const page = () => {
   );
 }
 
-export default page
+export default CoverPage

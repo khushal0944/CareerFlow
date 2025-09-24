@@ -65,7 +65,7 @@ const ResumePage = ({ initialContent }: { initialContent?: string }) => {
 
       const getContactMarkdown = () => {
 			const { contact } = formValues;
-			const parts = [];
+			const parts: string[] = [];
 			if (contact.email) parts.push(`📧 ${contact.email}`);
 			if (contact.mobile) parts.push(`📱 ${contact.mobile}`);
 			if (contact.linkedinUrl)
@@ -118,6 +118,7 @@ const ResumePage = ({ initialContent }: { initialContent?: string }) => {
 			console.log(data);
 			try {
 				await saveResumeFn(previewContent);
+                setIsSaving(false)
 			} catch (error) {
                 console.error("Saving resume failed", error)
             }
@@ -134,7 +135,7 @@ const ResumePage = ({ initialContent }: { initialContent?: string }) => {
 				</h1>
 				<div className="space-x-2">
 					<Button variant={"destructive"} onClick={submitData} disabled={isSaving}>
-						{isGenerating ? (
+						{isSaving ? (
 							<>
 								<Loader2 className="h-4 w-4 animate-spin" />{" "}
 								Saving...

@@ -6,13 +6,11 @@ import {
 	Card,
 	CardContent,
 	CardDescription,
-	CardFooter,
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
 import {
 	CartesianGrid,
-	Legend,
 	Line,
 	LineChart,
 	ResponsiveContainer,
@@ -26,7 +24,7 @@ const PerformanceChart = ({ assessment }: { assessment: AssessmentType[] }) => {
 
 	useEffect(() => {
 		if (assessment) {
-			const formattedData = assessment.map((each) => ({
+			const formattedData = assessment.map((each: AssessmentType) => ({
 					date: format(new Date(each.createdAt), "MMM dd"),
 					score: each.quizScore,
 				})

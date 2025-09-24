@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 
-const page = async ({params}: any) => {
+const EachLetterPage = async ({params}: any) => {
     const param = await params;
     const id = param.id
 
@@ -28,4 +28,4 @@ const page = async ({params}: any) => {
   )
 }
 
-export default page
+export default EachLetterPage

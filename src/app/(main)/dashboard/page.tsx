@@ -7,16 +7,13 @@ import { insightsType } from "./_components/types";
 
 const IndustryInsightsPage = async () => {
 	const { isOnboarded } = await getUserOnboardingStatus();
-    
-    console.log(isOnboarded)
-    if (!isOnboarded) {
-        redirect("/onboarding");
-    }
-    const insights: insightsType = await getIndustryInsights();
 
-		return (
-            <DashboardView insights={insights} />
-        )
+	if (!isOnboarded) {
+		redirect("/onboarding");
+	}
+	const insights: insightsType = await getIndustryInsights();
+
+	return <DashboardView insights={insights} />;
 };
 
 export default IndustryInsightsPage;

@@ -23,7 +23,7 @@ export interface AssessmentType {
     questions: QuizQuestion[] | any;
 }
 
-const page = async () => {
+const InterviewPage = async () => {
     const assessments: AssessmentType[] = await getAssessments();
   return (
     <div className='mx-5'>
@@ -40,4 +40,4 @@ const page = async () => {
   )
 }
 
-export default page
+export default InterviewPage;
